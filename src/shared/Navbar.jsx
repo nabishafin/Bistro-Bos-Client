@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../provider/AuthProvider';
+
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext)
 
-    const user = ''
+
+
 
     const links =
         <>
@@ -75,7 +79,7 @@ const Navbar = () => {
                             </div>
                             <ul
                                 tabIndex={0}
-                                className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
+                                className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-black'
                             >
                                 <li>
                                     <Link to='/add-job' className='justify-between'>
@@ -93,7 +97,7 @@ const Navbar = () => {
                                 </li>
                                 <li className='mt-2'>
                                     <button
-
+                                        onClick={() => logOut()}
                                         className='bg-gray-200 block text-center'
                                     >
                                         Logout

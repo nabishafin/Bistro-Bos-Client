@@ -1,13 +1,45 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import lofinbg from '../assets/others/authentication1.png'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import bg from '../assets/others/bg.png'
+import toast from 'react-hot-toast';
+import { AuthContext } from '../provider/AuthProvider';
 
 const LogIn = () => {
 
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location?.state || '/'
 
+    const { signIn, signInWithGoogle } = useContext(AuthContext)
+
+    const handlelogFormInfo = async (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const email = form.email.value
+        const password = form.password.value
+        if (password.length < 6) {
+            toast.error('Password must be at least 6 characters long.');
+        } else if (!/[A-Z]/.test(password)) {
+            toast.error('Password must contain at least one uppercase letter.');
+        } else if (!/[a-z]/.test(password)) {
+            toast.error('Password must contain at least one lowercase letter.');
+        } else {
+            try {
+                //User Login
+                await signIn(email, password)
+                toast.success('Signin Successful')
+                navigate(from, { replace: true })
+                form.reset()
+            } catch (err) {
+                toast.error(err?.message)
+            }
+        }
+
+
+    }
 
     return (
         <div>
@@ -37,7 +69,7 @@ const LogIn = () => {
                             </p>
 
                             <div
-
+                                onClick={() => signInWithGoogle()}
                                 className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '
                             >
                                 <div className='px-4 py-2'>
@@ -75,7 +107,7 @@ const LogIn = () => {
 
                                 <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
                             </div>
-                            <form >
+                            <form onSubmit={(e) => handlelogFormInfo(e)}>
                                 <div className='mt-4'>
                                     <label
                                         className='block mb-2 text-sm font-medium text-gray-600 '

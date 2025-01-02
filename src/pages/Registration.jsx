@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import lofinbg from '../assets/others/authentication1.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import bg from '../assets/others/bg.png'
+import { AuthContext } from '../provider/AuthProvider';
+import toast from 'react-hot-toast';
 const Registration = () => {
-
-
+    const navigate = useNavigate()
+    const { createUser, setUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext)
 
 
 
@@ -14,9 +16,30 @@ const Registration = () => {
         const form = e.target
         const email = form.email.value
         const name = form.name.value
-        const photo = form.photo.value
-        const pass = form.password.value
-        console.log(email, name, photo, pass)
+        const photoUrl = form.photo.value
+        const password = form.password.value
+
+        if (password.length < 6) {
+            toast.error('Password must be at least 6 characters long.');
+        } else if (!/[A-Z]/.test(password)) {
+            toast.error('Password must contain at least one uppercase letter.');
+        } else if (!/[a-z]/.test(password)) {
+            toast.error('Password must contain at least one lowercase letter.');
+        } else {
+            try {
+                //2. User Registration
+                const result = await createUser(email, password)
+                console.log(result)
+                await updateUserProfile(name, photoUrl)
+                setUser({ ...result.user, photoURL: photoUrl, displayName: name })
+                toast.success('Signup Successful')
+                navigate('/')
+                form.reset()
+            } catch (err) {
+                toast.error(err?.message)
+            }
+        }
+
     }
 
 
@@ -49,7 +72,7 @@ const Registration = () => {
                                 </p>
 
                                 <div
-
+                                    onClick={() => signInWithGoogle()}
                                     className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '
                                 >
                                     <div className='px-4 py-2'>
