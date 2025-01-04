@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
+import { AuthContext } from '../provider/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
+
 
 const RecipeCart = ({ item }) => {
+    const navigate = useNavigate()
+
+    const { user } = useContext(AuthContext)
+
+
+
+    const handleBtnAction = (id) => {
+        if (user && user?.email) {
+
+        } else {
+            Swal.fire({
+                title: "You are not Login",
+                text: "Please Login to Add to the Cart",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Log In"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/login', { state: { from: location } })
+                }
+            });
+        }
+    }
 
     return (
         <div className="card-container">
             <motion.div
-                className="card rounded-none glass h-[400px] w-[290px]" // Fixed height and width for the card
+                className="card rounded-none glass h-[400px] w-auto md:w-[290px]" // Fixed height and width for the card
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -73,6 +103,7 @@ const RecipeCart = ({ item }) => {
 
                     <div className="card-actions justify-center ">
                         <motion.button
+                            onClick={() => handleBtnAction(item._id)}
                             className="rounded-sm bg-[#E8E8E8] text-[#BB8506] p-2 hover:bg-[#1F2937]"
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             whileTap={{ scale: 0.95, rotate: -5 }}

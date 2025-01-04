@@ -1,24 +1,31 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../provider/AuthProvider';
+import { FaCartArrowDown } from "react-icons/fa";
 
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext)
 
 
-
+    console.log(user)
 
     const links =
         <>
             <li><Link to='/'>Home</Link></li>
             <li><Link to='/menu'>Menu</Link></li>
             <li><Link to='/ourShop/salad'>Our Shop</Link></li>
+            <li><Link to='/'>
+                <button className="flex items-center gap-1 ">
+                    <FaCartArrowDown size={20} />
+                    <div className="badge badge-secondary">+99</div>
+                </button>
+            </Link></li>
         </>
 
     return (
         <div>
-            <div className="navbar  bg-opacity-10   z-10 bg-black text-white " >
+            <div className="navbar     z-10 bg-black text-white " >
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

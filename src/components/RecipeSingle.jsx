@@ -3,7 +3,7 @@ import React from 'react';
 const RecipeSingle = ({ item }) => {
 
     const { _id, name, recipe, image, category, price } = item;
-    console.log(name)
+
 
     return (
         <div className=''>
