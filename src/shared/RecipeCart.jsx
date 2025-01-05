@@ -4,6 +4,7 @@ import { AuthContext } from '../provider/AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import useCart from '../hooks/useCart';
 
 
 
@@ -12,9 +13,11 @@ const RecipeCart = ({ item }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const axiosSecure = useAxiosSecure()
+    const [, refetch] = useCart()
+    console.log(refetch)
 
     const { user } = useContext(AuthContext)
-    console.log(user?.email)
+
 
 
     const handleBtnAction = (id) => {
@@ -34,7 +37,6 @@ const RecipeCart = ({ item }) => {
                         let timerInterval;
                         Swal.fire({
                             title: "Menu Added in Cart",
-
                             timer: 700,
                             timerProgressBar: true,
                             didOpen: () => {
@@ -46,10 +48,16 @@ const RecipeCart = ({ item }) => {
                             },
                             willClose: () => {
                                 clearInterval(timerInterval);
+                                refetch(); // Call refetch after Swal is closed
                             }
-                        })
+                        });
                     }
                 })
+                .catch(error => {
+                    console.error("Error adding menu to cart:", error);
+                });
+
+
 
         } else {
             Swal.fire({
