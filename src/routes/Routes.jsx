@@ -22,9 +22,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/ourShop/:category",
-                element: <PrivateRoute>
-                    <OurShop />
-                </PrivateRoute>,
+                element: <OurShop />
+                ,
             },
             {
                 path: "/login",

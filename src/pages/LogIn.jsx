@@ -9,17 +9,20 @@ import { AuthContext } from '../provider/AuthProvider';
 
 const LogIn = () => {
 
-    const navigate = useNavigate()
-    const location = useLocation()
-    const from = location?.state?.from.pathname || '/'
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+    console.log("state in the", location.state)
 
-    const { signIn, signInWithGoogle } = useContext(AuthContext)
+
+    const { signIn, signInWithGoogle } = useContext(AuthContext);
 
     const handlelogFormInfo = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const form = e.target;
-        const email = form.email.value
-        const password = form.password.value
+        const email = form.email.value;
+        const password = form.password.value;
+
         if (password.length < 6) {
             toast.error('Password must be at least 6 characters long.');
         } else if (!/[A-Z]/.test(password)) {
@@ -28,16 +31,15 @@ const LogIn = () => {
             toast.error('Password must contain at least one lowercase letter.');
         } else {
             try {
-                //User Login
-                await signIn(email, password)
-                toast.success('Signin Successful')
-                navigate(from, { replace: true })
-                form.reset()
+                // User Login
+                await signIn(email, password);
+                toast.success('Signin Successful');
+                navigate(from, { replace: true }); // Navigate back to the original page
+                form.reset();
             } catch (err) {
-                toast.error(err?.message)
+                toast.error(err?.message);
             }
         }
-
 
     }
 

@@ -1,20 +1,55 @@
 import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../provider/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+
 
 
 
 const RecipeCart = ({ item }) => {
     const navigate = useNavigate()
+    const location = useLocation()
+    const axiosSecure = useAxiosSecure()
 
     const { user } = useContext(AuthContext)
-
+    console.log(user?.email)
 
 
     const handleBtnAction = (id) => {
         if (user && user?.email) {
+
+            const menuCart = {
+                menuId: id,
+                email: user?.email,
+                name: item.name,
+                image: item.image,
+                price: item.price
+            }
+
+            axiosSecure.post('/carts', menuCart)
+                .then(res => {
+                    if (res.data.insertedId) {
+                        let timerInterval;
+                        Swal.fire({
+                            title: "Menu Added in Cart",
+
+                            timer: 700,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        })
+                    }
+                })
 
         } else {
             Swal.fire({
