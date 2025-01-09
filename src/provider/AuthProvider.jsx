@@ -2,6 +2,8 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged,
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../../firebase.init';
 import toast from 'react-hot-toast';
+import useAxiosPublic from '../hooks/useAxiosPublic';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -56,6 +58,8 @@ const AuthProvider = ({ children }) => {
     // singin with google
 
     const signInWithGoogle = async () => {
+        const axiosPublic = useAxiosPublic();
+
         try {
             setLoading(true); // Set loading state to true
 
@@ -66,17 +70,24 @@ const AuthProvider = ({ children }) => {
             const user = result.user;
             const email = user.email; // User's email
             const displayName = user.displayName; // User's display name
+            const userInfo = {
+                email: email,
+                name: displayName,
+            };
 
-            setLoading(false); // Set loading state to false after sign-in is successful
+            // Save user to backend
+            await axiosPublic.post('/users', userInfo);
 
             // Display success message with user info
             toast.success(`Logged in as ${displayName} (${email})`);
 
             // Redirect after successful sign-in
-            window.location.href = '/';
+
         } catch (error) {
-            // Handle the error, e.g., display an alert to the user
+            // Handle the error
             toast.error(error.message);
+        } finally {
+            setLoading(false); // Reset loading state
         }
     };
 

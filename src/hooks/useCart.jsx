@@ -5,7 +5,7 @@ import { AuthContext } from '../provider/AuthProvider';
 
 const useCart = () => {
     const { user } = useContext(AuthContext)
-    console.log(user?.email)
+
 
     const { refetch, data: cart = [] } = useQuery({
 

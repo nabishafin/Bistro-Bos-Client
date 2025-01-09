@@ -14,7 +14,7 @@ const RecipeCart = ({ item }) => {
     const location = useLocation()
     const axiosSecure = useAxiosSecure()
     const [, refetch] = useCart()
-    console.log(refetch)
+
 
     const { user } = useContext(AuthContext)
 
