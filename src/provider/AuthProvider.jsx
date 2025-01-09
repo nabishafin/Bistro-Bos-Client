@@ -58,15 +58,28 @@ const AuthProvider = ({ children }) => {
     const signInWithGoogle = async () => {
         try {
             setLoading(true); // Set loading state to true
-            await signInWithPopup(auth, googleProvider); // Trigger Google sign-in
+
+            // Trigger Google sign-in
+            const result = await signInWithPopup(auth, googleProvider);
+
+            // Get user information from the result
+            const user = result.user;
+            const email = user.email; // User's email
+            const displayName = user.displayName; // User's display name
+
             setLoading(false); // Set loading state to false after sign-in is successful
-            toast.success('Log In By Google Success')
+
+            // Display success message with user info
+            toast.success(`Logged in as ${displayName} (${email})`);
+
+            // Redirect after successful sign-in
             window.location.href = '/';
         } catch (error) {
-            toast.error(error.message)
             // Handle the error, e.g., display an alert to the user
+            toast.error(error.message);
         }
-    }
+    };
+
 
     const authInfo = {
         createUser,

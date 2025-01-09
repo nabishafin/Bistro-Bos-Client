@@ -5,8 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import bg from '../assets/others/bg.png'
 import { AuthContext } from '../provider/AuthProvider';
 import toast from 'react-hot-toast';
+import useAxiosPublic from '../hooks/useAxiosPublic';
 const Registration = () => {
     const navigate = useNavigate()
+    const axiosPublic = useAxiosPublic()
     const { createUser, setUser, updateUserProfile, signInWithGoogle } = useContext(AuthContext)
 
 
@@ -32,9 +34,19 @@ const Registration = () => {
                 console.log(result)
                 await updateUserProfile(name, photoUrl)
                 setUser({ ...result.user, photoURL: photoUrl, displayName: name })
-                toast.success('Signup Successful')
-                navigate('/')
-                form.reset()
+                const userInfo = {
+                    name: name,
+                    email: email
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            toast.success('Signup Successful')
+                            navigate('/')
+                            form.reset()
+                        }
+                    })
+
             } catch (err) {
                 toast.error(err?.message)
             }

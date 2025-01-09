@@ -6,34 +6,44 @@ import OurShop from "../pages/OurShop";
 import LogIn from "../pages/LogIn";
 import Registration from "../pages/Registration";
 import PrivateRoute from "./PrivateRoute";
+import DashBoard from "../layout/DashBoard";
+import Cart from "../DashBoard/Cart";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Root></Root>,
+        element: <Root />,
         children: [
             {
                 path: "/",
                 element: <Home />,
             },
             {
-                path: "/menu",
+                path: "menu",
                 element: <Menu />,
             },
             {
-                path: "/ourShop/:category",
-                element: <OurShop />
-                ,
+                path: "ourShop/:category",
+                element: <OurShop />,
             },
             {
-                path: "/login",
+                path: "login",
                 element: <LogIn />,
             },
             {
-                path: "/registration",
+                path: "registration",
                 element: <Registration />,
-            }
+            },
+        ],
+    },
+    {
+        path: "dashboard",
+        element: <DashBoard />,
+        children: [
+            {
+                path: "cart",
+                element: <Cart />,
+            },
         ],
     },
 ]);
-

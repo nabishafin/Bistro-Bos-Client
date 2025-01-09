@@ -17,7 +17,7 @@ const Navbar = () => {
             <li><Link to='/'>Home</Link></li>
             <li><Link to='/menu'>Menu</Link></li>
             <li><Link to='/ourShop/salad'>Our Shop</Link></li>
-            <li><Link to='/'>
+            <li><Link to='/dashboard/cart'>
                 <button className="flex items-center gap-1 ">
                     <FaCartArrowDown size={20} />
                     <div className="badge badge-secondary">+{cart.length}</div>
