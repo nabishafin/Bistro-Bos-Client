@@ -1,13 +1,19 @@
 import React from 'react';
-import { FaHome, FaSearch } from 'react-icons/fa';
+import { FaHome, FaSearch, FaUsers } from 'react-icons/fa';
 import { FaBookBookmark, FaCalendar, FaCartFlatbedSuitcase } from 'react-icons/fa6';
 import { IoMenuSharp } from 'react-icons/io5';
 import { MdContactMail, MdOutlineReviews } from 'react-icons/md';
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import useCart from '../hooks/useCart';
+import { GiForkKnifeSpoon } from 'react-icons/gi';
 
 const DashBoard = () => {
     const [cart] = useCart()
+
+    const isAdmin = true;     // TODO:
+
+
+
     return (
         <div className="flex flex-col md:flex-row">
             {/* Sidebar */}
@@ -17,61 +23,101 @@ const DashBoard = () => {
                     <p className='text-lg font-bold '>Restaurant</p>
                 </div>
                 <ul className="menu px-4 hidden md:block">
-                    <li>
-                        <Link to="/dashboard/userhome">
-                            <FaHome />
-                            User Home
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard/reservation">
-                            <FaCalendar />
-                            Reservation
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard/cart">
-                            <FaCartFlatbedSuitcase />
-                            <p>My Cart  <span className='p-1 bg-white rounded-full'>{cart.length}</span></p>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard/reviews">
-                            <MdOutlineReviews />
-                            Add Review
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard/mybookings">
-                            <FaBookBookmark />
-                            My Bookings
-                        </Link>
-                    </li>
+                    {
+                        isAdmin ? <>
+
+
+                            <li>
+                                <NavLink to="/dashboard/userhome">
+                                    <FaHome />
+                                    Admin Home
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard/reservation">
+                                    <GiForkKnifeSpoon />
+                                    Add Items
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard/cart">
+                                    <FaCartFlatbedSuitcase />
+                                    Manage Items
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard/reviews">
+                                    <MdOutlineReviews />
+                                    Manage Bookings
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard/allUsers">
+                                    <FaUsers />
+                                    All Users
+                                </NavLink>
+                            </li></>
+                            :
+                            <>
+                                <li>
+                                    <NavLink to="/dashboard/userhome">
+                                        <FaHome />
+                                        User Home
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/dashboard/reservation">
+                                        <FaCalendar />
+                                        Reservation
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/dashboard/cart">
+                                        <FaCartFlatbedSuitcase />
+                                        <p>My Cart  <span className='p-1 bg-white rounded-full'>{cart.length}</span></p>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/dashboard/reviews">
+                                        <MdOutlineReviews />
+                                        Add Review
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/dashboard/mybookings">
+                                        <FaBookBookmark />
+                                        My Bookings
+                                    </NavLink>
+                                </li>
+                            </>
+                    }
+
+
                     <div className="divider px-2"></div>
 
                     <li>
-                        <Link to="/">
+                        <NavLink to="/">
                             <FaHome />
                             Home
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/menu">
+                        <NavLink to="/ourShop/menu">
                             <IoMenuSharp />
                             Menu
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/salad">
+                        <NavLink to="/ourShop/salad">
                             <FaSearch />
                             Our Shop
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/contact">
+                        <NavLink to="/ourShop/contact">
                             <MdContactMail />
                             Contact
-                        </Link>
+                        </NavLink>
                     </li>
                 </ul>
 
@@ -93,60 +139,64 @@ const DashBoard = () => {
                     className="menu p-4 bg-[#D1A054] hidden md:hidden"
                 >
                     <li>
-                        <Link to="/dashboard/userhome">
+                        <NavLink to="/dashboard/userhome">
                             <FaHome />
                             User Home
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/dashboard/reservation">
+                        <NavLink to="/dashboard/reservation">
                             <FaCalendar />
                             Reservation
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/dashboard/cart">
+                        <NavLink to="/dashboard/cart">
                             <FaCartFlatbedSuitcase />
                             My Cart
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/dashboard/reviews">
+                        <NavLink to="/dashboard/reviews">
                             <MdOutlineReviews />
                             Add Review
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/dashboard/mybookings">
+                        <NavLink to="/dashboard/mybookings">
                             <FaBookBookmark />
                             My Bookings
-                        </Link>
+                        </NavLink>
                     </li>
+
                     <div className="divider px-2"></div>
+
+                    {/* Common Base */}
                     <li>
-                        <Link to="/">
+                        <NavLink to="/">
                             <FaHome />
                             Home
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/menu">
+                        <NavLink to="/ourShop/menu">
                             <IoMenuSharp />
                             Menu
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/salad">
+                        <NavLink to="/ourShop/salad">
                             <FaSearch />
                             Our Shop
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/ourShop/contact">
+                        <NavLink to="/ourShop/contact">
                             <MdContactMail />
                             Contact
-                        </Link>
+                        </NavLink>
                     </li>
+
                 </ul>
             </div>
 

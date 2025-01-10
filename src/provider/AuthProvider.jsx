@@ -15,6 +15,7 @@ const AuthProvider = ({ children }) => {
     const googleProvider = new GoogleAuthProvider()
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const axiosPublic = useAxiosPublic()
 
     // create user
     const createUser = (email, password) => {
@@ -34,6 +35,22 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
+
+            if (currentUser) {
+                const userInfo = {
+                    email: currentUser.email
+                }
+                console.log(userInfo)
+                axiosPublic.post('/jwt', userInfo)
+                    .then(res => {
+                        if (res.data.token) {
+                            localStorage.setItem('access-token', res.data.token)
+                        }
+                    })
+            }
+            else {
+                localStorage.removeItem('access-token')
+            }
             setLoading(false)
         })
         return () => {
@@ -78,10 +95,12 @@ const AuthProvider = ({ children }) => {
             // Save user to backend
             await axiosPublic.post('/users', userInfo);
 
+
             // Display success message with user info
             toast.success(`Logged in as ${displayName} (${email})`);
 
             // Redirect after successful sign-in
+
 
         } catch (error) {
             // Handle the error
