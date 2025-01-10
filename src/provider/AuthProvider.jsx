@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             return unsubscribe()
         }
-    }, [])
+    }, [axiosPublic])
 
 
     // login user by email
