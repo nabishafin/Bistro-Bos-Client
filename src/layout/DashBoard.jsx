@@ -6,11 +6,13 @@ import { MdContactMail, MdOutlineReviews } from 'react-icons/md';
 import { NavLink, Outlet } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import { GiForkKnifeSpoon } from 'react-icons/gi';
+import useAdmin from '../hooks/useAdmin';
 
 const DashBoard = () => {
     const [cart] = useCart()
 
-    const isAdmin = true;     // TODO:
+    const [isAdmin] = useAdmin()    // TODO:
+
 
 
 
