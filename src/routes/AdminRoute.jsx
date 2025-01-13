@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import useAdmin from '../hooks/useAdmin';
 import { AuthContext } from '../provider/AuthProvider';
 import { Navigate, useLocation } from 'react-router-dom';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
-const AdminRoute = () => {
+const AdminRoute = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
     const [isAdmin, isAdminLoading] = useAdmin()
     const location = useLocation();
